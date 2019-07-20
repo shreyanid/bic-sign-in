@@ -1,4 +1,4 @@
-//jshint esversion: 6
+//jshint esversion: 9
 
 //NPM Modules
 const express = require('express');
@@ -342,6 +342,12 @@ app.post('/upload', function(req, res) {
     }
     Group.insertMany(groupsToInsert, function(err, docs) {
       if (!err) {
+
+        //Copy file to stored location
+        fs.copyFile(__dirname + "/temp/" + file.name, __dirname + "/public/data/current_members.csv", (err) => {
+          if (err) throw err;
+        });
+
         fs.unlinkSync(__dirname + "/temp/" + file.name); //Delete file
         res.redirect("/");
       } else {

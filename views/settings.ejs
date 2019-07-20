@@ -18,6 +18,7 @@
         <br /><br />
         <button type="submit" class="btn btn-info btn-lg btn-block setting-button" name="button" value="preferences">Change Preferences</button>
 
+
         <button type="button" class="btn btn-primary btn-lg btn-block setting-button" data-toggle="collapse" href="#exportOptions" role="button" name="button" value="export">Attendance Data</button>
         <div class="collapse" id="exportOptions">
 
@@ -28,7 +29,7 @@
                 <select class="custom-select" id="selectNames" name="name">
                   <option selected>All Members</option>
                   <% people.forEach(function(person) { %>
-                    <option value="<%=person%>"><%=person%></option>
+                  <option value="<%=person%>"><%=person%></option>
                   <% }); %>
                 </select>
               </div>
@@ -47,10 +48,21 @@
           </div>
         </div>
 
-        <button type="submit" class="btn btn-warning btn-lg btn-block setting-button" name="button" value="update">Reset Organization Members</button>
-        <p class="settings-description">Previous attendance records will remain, but the current status of all organization members will be reset. It is recommended to update member names after all existing members have signed out for the day.</p>
-        <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAttendance">Reset Attendance Data</button>
-        <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAll">Reset All Data</button>
+        <div class="update-button-container">
+          <button type="button" class="btn btn-warning btn-lg btn-block setting-button update-button" onclick="clickedUpdate()">Download & Update Organization Members</button>
+        <!-- <button type="submit" class="btn btn-warning btn-lg btn-block setting-button update-button" name="button" value="update">Update Organization Members</button> -->
+        </div>
+        <p class="settings-description">Previous attendance records will remain, but the current sign in status of all organization members will be reset. It is recommended to update member names after all existing members have signed out for the
+          day.</p>
+          <br /><br /><br />
+        <div class="reset-att">
+          <button type="button" class="btn btn-danger btn-lg btn-block setting-button" onclick="clickedResetAtt()">Reset Attendance Data</button>
+          <!-- <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAttendance">Reset Attendance Data</button> -->
+        </div>
+        <div class="reset-all">
+          <button type="button" class="btn btn-danger btn-lg btn-block setting-button" onclick="clickedResetAll()">Reset All Data</button>
+          <!-- <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAll">Reset All Data</button> -->
+        </div>
         <p class="settings-description">Previous attendance records, organization member names, and preferences will be deleted.</p>
       </form>
 
@@ -86,6 +98,7 @@
       }
     });
   </script>
+  <script type="text/javascript" src="scripts/settings.js"></script>
 
 </body>
 

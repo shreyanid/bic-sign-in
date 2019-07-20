@@ -1,4 +1,3 @@
 {
-  "mongodbURL": "mongodb+srv://admin-aashish:test123@cluster0-zi138.mongodb.net/SignInDB",
-  "local_mongodbURL": "mongodb://localhost/SignInDB"
+  "mongodbURL": "mongodb+srv://admin-aashish:test123@cluster0-zi138.mongodb.net/SignInDB"
 }

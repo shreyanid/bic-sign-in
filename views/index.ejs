@@ -1,147 +1,148 @@
 <%- include('partials/header'); -%>
 </head>
+
 <body>
 
-<section class="header-section">
-  <div class="container-fluid">
-    <h1 class="main-title"><%= orgName %></h1>
-    <h5 class="smaller-title"><%= date %></h5>
-  </div>
-</section>
+  <section class="header-section">
+    <div class="container-fluid">
+      <h1 class="main-title"><%= orgName %></h1>
+      <h5 class="smaller-title"><%= date %></h5>
+    </div>
+  </section>
 
 
 
 
-<section class="switches-section">
+  <section class="switches-section">
 
 
-  <div class="container-fluid">
-    <ul class="nav nav-pills nav-fill" role="tablist" id="tab-header">
-      <!-- Start Tab Titles -->
-      <% groups.forEach(function(group) { %>
-      <% if (group.main) { %>
-      <li class="nav-item tab-title">
-        <a class="nav-link active" data-toggle="pill" href="#i-<%= group._id %>" role="tab"><%= group.name %></a>
-      </li>
-      <% } else { %>
-      <li class="nav-item tab-title">
-        <a class="nav-link" data-toggle="pill" href="#i-<%= group._id %>" role="tab"><%= group.name %></a>
-      </li>
-      <% } %>
-      <% }); %>
-      <!-- End Tab Titles -->
-    </ul>
-    <div class="tab-content" id="tab-content">
-      <!-- Start Tab Content Holders -->
+    <div class="container-fluid">
+      <ul class="nav nav-pills nav-fill" role="tablist" id="tab-header">
+        <!-- Start Tab Titles -->
+        <% groups.forEach(function(group) { %>
+        <% if (group.main) { %>
+        <li class="nav-item tab-title">
+          <a class="nav-link active" data-toggle="pill" href="#i-<%= group._id %>" role="tab"><%= group.name %></a>
+        </li>
+        <% } else { %>
+        <li class="nav-item tab-title">
+          <a class="nav-link" data-toggle="pill" href="#i-<%= group._id %>" role="tab"><%= group.name %></a>
+        </li>
+        <% } %>
+        <% }); %>
+        <!-- End Tab Titles -->
+      </ul>
+      <div class="tab-content" id="tab-content">
+        <!-- Start Tab Content Holders -->
 
-      <% groups.forEach(function(group) { %>
+        <% groups.forEach(function(group) { %>
 
-      <% if (group.main) { %>
-      <div class="tab-pane fade show active" id="i-<%= group._id %>" role="tabpanel">
-        <div id="<%= group.name %>-users">
+        <% if (group.main) { %>
+        <div class="tab-pane fade show active" id="i-<%= group._id %>" role="tabpanel">
+          <div id="<%= group.name %>-users">
 
-          <!-- Start Search bar-->
-          <input class="search form-control form-control-lg" placeholder="Search ..." />
-          <!-- End Search bar-->
+            <!-- Start Search bar-->
+            <input class="search form-control form-control-lg" placeholder="Search ..." />
+            <!-- End Search bar-->
 
-          <ul class="list-group list-group-flush list">
+            <ul class="list-group list-group-flush list">
 
-            <% group.members.forEach(function(member) { %>
+              <% group.members.forEach(function(member) { %>
 
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-7 name-container">
-                  <p class="name"><%=member.name%></p>
-                </div>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-7 name-container">
+                    <p class="name"><%=member.name%></p>
+                  </div>
 
-                <% if (member.currentlyHere) { %>
-                <div class="col-5">
-                  <form action="/" method="post">
-                    <input type="hidden" name="groupID" value="<%= group._id %>">
-                    <button type="submit" class="btn btn-danger btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signOutText %>&nbsp;&nbsp;<i class="<%= signOutIcon %>"></i></button>
-                  </form>
-                </div>
-                <% } else { %>
-                <div class="col-5">
-                  <form action="/" method="post">
-                    <input type="hidden" name="groupID" value="<%= group._id %>"">
+                  <% if (member.currentlyHere) { %>
+                  <div class="col-5">
+                    <form action="/" method="post">
+                      <input type="hidden" name="groupID" value="<%= group._id %>">
+                      <button type="submit" class="btn btn-danger btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signOutText %>&nbsp;&nbsp;<i class="<%= signOutIcon %>"></i></button>
+                    </form>
+                  </div>
+                  <% } else { %>
+                  <div class="col-5">
+                    <form action="/" method="post">
+                      <input type="hidden" name="groupID" value="<%= group._id %>"">
                   <button type=" submit" class="btn btn-success btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signInText %>&nbsp;&nbsp;<i class="<%= signInIcon %>"></i></button>
-                  </form>
+                    </form>
+                  </div>
+                  <% } %>
+
                 </div>
-                <% } %>
+              </li>
 
-              </div>
-            </li>
+              <% }); %>
 
-            <% }); %>
-
-          </ul>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <% } else { %>
+        <% } else { %>
 
-      <div class="tab-pane fade" id="i-<%= group._id %>" role="tabpanel">
-        <div id="<%= group.name %>-users">
-          <!-- Start Search bar-->
-          <input class="search form-control form-control-lg" placeholder="Search ..." />
-          <!-- End Search bar-->
-          <ul class="list-group list-group-flush list">
+        <div class="tab-pane fade" id="i-<%= group._id %>" role="tabpanel">
+          <div id="<%= group.name %>-users">
+            <!-- Start Search bar-->
+            <input class="search form-control form-control-lg" placeholder="Search ..." />
+            <!-- End Search bar-->
+            <ul class="list-group list-group-flush list">
 
-            <% group.members.forEach(function(member) { %>
+              <% group.members.forEach(function(member) { %>
 
-            <li class="list-group-item">
-              <div class="row">
-                <div class="col-7 name-container">
-                  <p class="name"><%=member.name%></p>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-7 name-container">
+                    <p class="name"><%=member.name%></p>
+                  </div>
+
+                  <% if (member.currentlyHere) { %>
+                  <div class="col-5">
+                    <form action="/" method="post">
+                      <input type="hidden" name="groupID" value="<%= group._id %>">
+                      <button type="submit" class="btn btn-danger btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signOutText %>&nbsp;&nbsp;<i class="<%= signOutIcon %>"></i></button>
+                    </form>
+                  </div>
+                  <% } else { %>
+                  <div class="col-5">
+                    <form action="/" method="post">
+                      <input type="hidden" name="groupID" value="<%= group._id %>">
+                      <button type="submit" class="btn btn-success btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signInText %>&nbsp;&nbsp;<i class="<%= signInIcon %>"></i></button>
+                    </form>
+                  </div>
+                  <% } %>
+
                 </div>
+              </li>
 
-                <% if (member.currentlyHere) { %>
-                <div class="col-5">
-                  <form action="/" method="post">
-                    <input type="hidden" name="groupID" value="<%= group._id %>">
-                    <button type="submit" class="btn btn-danger btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signOutText %>&nbsp;&nbsp;<i class="<%= signOutIcon %>"></i></button>
-                  </form>
-                </div>
-                <% } else { %>
-                <div class="col-5">
-                  <form action="/" method="post">
-                    <input type="hidden" name="groupID" value="<%= group._id %>">
-                    <button type="submit" class="btn btn-success btn-lg btn-block" name="memberID" value="<%= member._id %>" onclick="buttonClicked()"><%= signInText %>&nbsp;&nbsp;<i class="<%= signInIcon %>"></i></button>
-                  </form>
-                </div>
-                <% } %>
+              <% }); %>
 
-              </div>
-            </li>
-
-            <% }); %>
-
-          </ul>
+            </ul>
+          </div>
         </div>
+
+        <% } %>
+
+        <% }); %>
+
+        <!-- End Tab Content Holders -->
       </div>
+    </div>
+  </section>
 
-      <% } %>
-
-      <% }); %>
-
-      <!-- End Tab Content Holders -->
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        Thank you!
+      </div>
     </div>
   </div>
-</section>
 
-<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" id="myModal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      Thank you!
-    </div>
-  </div>
-</div>
+  <%- include('partials/footer'); -%>
 
-<%- include('partials/footer'); -%>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-<script src="scripts/index.js"></script>
-
+  <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+  <script src="scripts/index.js"></script>
 </body>
+
 </html>
