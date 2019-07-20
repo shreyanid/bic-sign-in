@@ -1,0 +1,90 @@
+body {
+  background-color: #f5f6fa;
+  /* A fancy white */
+}
+
+/* Header */
+.header-section {
+  background-color: #2ecc71;
+  color: white;
+  padding: 2%;
+}
+
+.main-title {
+  font-size: 3rem;
+}
+
+.smaller-title {
+  padding-top: 10px;
+}
+
+@media(max-width: 768px) {
+  .header-section {
+    text-align: center;
+  }
+}
+
+/* Home Page */
+.tab-title {
+  font-size: 1.2rem;
+  background-color: #ecf0f1;
+}
+
+.switches-section {
+  padding: 3% 4%;
+}
+
+.tab-content {
+  padding-top: 2%;
+}
+
+.list-group-item {
+  /* Optional (for visibility) */
+  background-color: #f5f6fa;
+  padding: 2% 0;
+}
+
+.name-container {
+  line-height: 0.7;
+  padding-top: 2%;
+}
+
+.name {
+  font-size: 1.5rem;
+}
+
+.modal-content {
+  font-size: 1.5rem;
+  padding: 6% 0;
+  text-align: center;
+}
+
+/* Setup Page */
+.fileUpload-section {
+  padding-top: 7%;
+}
+
+/* Settings Page */
+.settings-section {
+  padding-top: 7%;
+}
+
+.settings-description {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+.settings-form {
+  margin: 0 10%;
+}
+
+.setting-button {
+  margin-bottom: 2%;
+}
+
+/* Preferences Page */
+.preferences-form {
+  margin: 0 10% 3%;
+}

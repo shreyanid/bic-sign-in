@@ -1,0 +1,92 @@
+<%- include('partials/header'); -%>
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+  <section class="header-section">
+    <div class="container-fluid">
+      <h1 class="main-title">Settings</h1>
+    </div>
+  </section>
+
+  <section class="settings-section">
+    <div class="container-fluid">
+
+      <form action="/settings" method="post" class="settings-form">
+        <button type="submit" class="btn btn-success btn-lg btn-block setting-button" name="button" value="home">Go Back Home</button>
+        <br /><br />
+        <button type="submit" class="btn btn-info btn-lg btn-block setting-button" name="button" value="preferences">Change Preferences</button>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block setting-button" data-toggle="collapse" href="#exportOptions" role="button" name="button" value="export">Attendance Data</button>
+        <div class="collapse" id="exportOptions">
+
+          <div class="card card-body">
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="selectNames">Select a Name</label>
+                <select class="custom-select" id="selectNames" name="name">
+                  <option selected>All Members</option>
+                  <% people.forEach(function(person) { %>
+                    <option value="<%=person%>"><%=person%></option>
+                  <% }); %>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="fromDate">From</label>
+                <input type="hidden" id="minDateFromRecords" value="<%=minDate%>">
+                <input type="hidden" id="maxDateFromRecords" value="<%=maxDate%>">
+                <input type="text" class="form-control" id="fromDate" name="fromDate" autocomplete="off">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label for="toDate">To</label>
+                <input type="text" class="form-control" id="toDate" name="toDate" autocomplete="off">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" name="button" value="export">Export</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg btn-block setting-button" name="button" value="update">Reset Organization Members</button>
+        <p class="settings-description">Previous attendance records will remain, but the current status of all organization members will be reset. It is recommended to update member names after all existing members have signed out for the day.</p>
+        <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAttendance">Reset Attendance Data</button>
+        <button type="submit" class="btn btn-danger btn-lg btn-block setting-button" name="button" value="resetAll">Reset All Data</button>
+        <p class="settings-description">Previous attendance records, organization member names, and preferences will be deleted.</p>
+      </form>
+
+    </div>
+  </section>
+
+
+  <%- include('partials/footer'); -%>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+  <script>
+    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    $('#fromDate').datepicker({
+      uiLibrary: 'bootstrap4',
+      iconsLibrary: 'fontawesome',
+      minDate: function() {
+        return $("#minDateFromRecords").val();
+      },
+      maxDate: function() {
+        return $('#maxDateFromRecords').val();
+      },
+      defaultDate: function() {
+        return $("#minDateFromRecords").val();
+      }
+    });
+    $('#toDate').datepicker({
+      uiLibrary: 'bootstrap4',
+      iconsLibrary: 'fontawesome',
+      minDate: function() {
+        return $('#fromDate').val();
+      },
+      maxDate: function() {
+        return $('#maxDateFromRecords').val();
+      }
+    });
+  </script>
+
+</body>
+
+</html>

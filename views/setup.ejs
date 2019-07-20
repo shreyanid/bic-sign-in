@@ -1,0 +1,38 @@
+<%- include('partials/header'); -%>
+</head>
+<body>
+
+<section class="header-section">
+  <div class="container-fluid">
+    <h1 class="main-title">Please upload your data</h1>
+    <h6 class="smaller-title">Use this <a href="data_template.csv" download="data.csv">template</a>. Keep the headers (Name & Group), but change the contents to your organization's members and group names.</h6>
+  </div>
+</section>
+
+<section class="fileUpload-section">
+  <div class="container-fluid">
+
+    <form action="/upload" enctype="multipart/form-data" method="post">
+
+      <div class="input-group">
+        <div class="custom-file">
+          <input type="file" name="upload" class="custom-file-input" id="fileUpload" accept=".csv" required>
+          <label class="custom-file-label" for="fileUpload">Choose file</label>
+        </div>
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="submit" value="Upload">Upload</button>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</section>
+
+
+<%- include('partials/footer'); -%>
+
+<script src="scripts/setup.js"></script>
+
+</body>
+</html>

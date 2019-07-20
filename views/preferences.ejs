@@ -1,0 +1,56 @@
+<%- include('partials/header'); -%>
+</head>
+<body>
+
+<section class="header-section">
+  <div class="container-fluid">
+    <h1 class="main-title">Preferences</h1>
+  </div>
+</section>
+
+<section class="settings-section">
+  <div class="container-fluid">
+
+    <form action="/preferences" method="post" class="preferences-form">
+      <div class="form-group">
+      <button type="submit" class="btn btn-success btn-lg btn-block" name="button" value="settings">Go Back To Settings</button>
+      </div>
+      <br/><br/>
+
+      <div class="form-group">
+        <label for="orgNameInput">What is your organization's name?</label>
+        <input type="text" class="form-control" id="orgNameInput" name="orgName" value="<%=orgName%>">
+        <small class="form-text text-muted">This is the text that will appear at the top of your sign in page. By default, it will simply read "Sign In".</small>
+      </div>
+      <div class="form-group">
+        <label for="signInTextInput">Sign In Text</label>
+        <input type="text" class="form-control" id="signInTextInput" value="<%=signInText%>" name="signInText">
+        <small class="form-text text-muted">This is the text that will appear inside the Sign In button. By default, it will simply read "Sign In".</small>
+      </div>
+      <div class="form-group">
+        <label for="signInIconInput">Sign In Icon</label>
+        <input type="text" class="form-control" value="<%=signInIcon%>" name="signInIcon">
+        <small class="form-text text-muted">This is the icon that will appear next to the Sign In text. By default, there is no icon. Find icons <a href="https://glyphsearch.com/?copy=class&library=font-awesome" target="_blank">here</a></small>
+      </div>
+      <div class="form-group">
+        <label for="signOutTextInput">Sign Out Text</label>
+        <input type="text" class="form-control" id="signOutTextInput" value="<%=signOutText%>" name="signOutText">
+        <small class="form-text text-muted">This is the text that will appear inside the Sign Out button. By default, it will simply read "Sign Out".</small>
+      </div>
+      <div class="form-group">
+        <label for="signOutIconInput">Sign Out Icon</label>
+        <input type="text" class="form-control" id="signOutIconInput" name="signOutIcon" value="<%=signOutIcon%>">
+        <small class="form-text text-muted">This is the icon that will appear next to the Sign Out text. By default, there is no icon. Find icons <a href="https://glyphsearch.com/?copy=class&library=font-awesome" target="_blank">here</a></small>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+  </div>
+</section>
+
+
+<%- include('partials/footer'); -%>
+</body>
+
+</html>
