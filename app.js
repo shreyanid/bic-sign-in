@@ -417,9 +417,12 @@ app.post("/", function(req, res) {
 var use_heroku = true;
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3000;
+  port = 3005;
   use_heroku = false;
 }
+
+//Regular locahost
+// let port = 3000
 
 app.listen(port, function() {
   if (use_heroku) {
