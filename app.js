@@ -295,7 +295,7 @@ app.post("/upload", (req, res) => {
   });
 });
 
-//Button click post request handler
+//Sign in/out Button click post request handler
 app.post("/", (req, res) => {
   var memberID = req.body.memberID;
   var groupID = req.body.groupID;
@@ -345,7 +345,12 @@ app.post("/", (req, res) => {
               if (!err) {
                 setTimeout(function() {
                   res.redirect("/");
-                }, 400);
+                }, 850);
+              } else {
+                res.render("error", {
+                  error:
+                    "Could not connect to database, please check your internet connection."
+                });
               }
             }
           );
