@@ -4,18 +4,6 @@ const dbModels = require(__dirname + "/models.js");
 const _ = require("lodash");
 const support = require("../app_functions.js");
 
-//Connect to mongodb function
-module.exports.connect = _ => {
-  //Load config.json file
-  var config = JSON.parse(fs.readFileSync("config.json", "utf-8"));
-
-  //Make local or atlas mongoDB connections
-  mongoose.connect(config.mongodbURL, {
-    useNewUrlParser: true,
-    useFindAndModify: false
-  });
-};
-
 //Export find model contents functions
 module.exports.getGroups = callback => {
   dbModels.Group.find((err, groups) => {

@@ -8,6 +8,7 @@ const formidable = require("formidable");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 const colors = require("colors");
+const editJsonFile = require("edit-json-file");
 
 // Local Modules
 const support = require(__dirname + "/app_functions.js");
@@ -24,41 +25,79 @@ app.use(
 );
 app.use(express.static("public"));
 
-// Connect to db
-db.connect();
+//Load config.json file
+var configRead = JSON.parse(
+  fs.readFileSync(__dirname + "/config.json", "utf-8")
+);
+let configWrite = editJsonFile(__dirname + "/config.json");
+
+//Make local or atlas mongoDB connections
+var connected = false;
+let tryConnect = async url => {
+  try {
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useFindAndModify: false
+    });
+    if (mongoose.connection.readyState === 1) {
+      connected = true;
+    }
+  } catch (error) {
+    console.log("Couldn't connect to DB");
+  }
+};
+
+tryConnect(configRead.mongodbURL);
+
+app.post("/mongosetup", async (req, res) => {
+  await tryConnect(req.body.url);
+  if (connected) {
+    // The connection is good so save URL to file
+    // Set reset all button to also reset the config.json file ORRR maybe not
+    configWrite.set("mongodbURL", req.body.url);
+    configWrite.save();
+    res.render("setup");
+  } else {
+    res.render("mongodbsetup");
+  }
+});
 
 // Main page get route
 app.get("/", (req, res) => {
-  db.getGroups((groups, groupsIsEmpty) => {
-    //Check if there is data in the db
-    if (groups && !groupsIsEmpty) {
-      //Populate settings db with some default prefs
-      new dbModels.Setting().save(err => {
-        if (!err) {
-          db.getSettings(settings => {
-            if (settings) {
-              let prefs = settings[0];
-              res.render("index", {
-                date: support.getDate(),
-                groups: groups,
-                orgName: prefs.orgName,
-                signInText: prefs.signInText,
-                signOutText: prefs.signOutText,
-                signInIcon: prefs.signInIcon,
-                signOutIcon: prefs.signOutIcon
-              });
-            } else {
-              // In case settings is empty for some reason
-              res.redirect("/");
-            }
-          });
-        }
-      });
-    } else {
-      // If there is no data in the db, let the user upload a file
-      res.render("setup");
-    }
-  });
+  if (!connected) {
+    res.render("mongodbSetup");
+  } else {
+    db.getGroups((groups, groupsIsEmpty) => {
+      //Check if there is data in the db
+      if (groups && !groupsIsEmpty) {
+        //Populate settings db with some default prefs
+        new dbModels.Setting().save(err => {
+          if (!err) {
+            db.getSettings(settings => {
+              if (settings) {
+                let prefs = settings[0];
+                res.render("index", {
+                  date: support.getDate(),
+                  groups: groups,
+                  orgName: prefs.orgName,
+                  signInText: prefs.signInText,
+                  signOutText: prefs.signOutText,
+                  signInIcon: prefs.signInIcon,
+                  signOutIcon: prefs.signOutIcon
+                });
+              } else {
+                // In case settings is empty for some reason
+                res.redirect("/");
+              }
+            });
+          }
+        });
+      } else {
+        // If there is no data in the db, let the user upload a file
+        res.render("setup");
+      }
+    });
+  }
 });
 
 // Settings page get route
@@ -100,7 +139,10 @@ app.post("/settings", (req, res) => {
       break;
     case "resetAll":
       mongoose.connection.db.dropDatabase();
-      res.redirect("/");
+      configWrite.set("mongodbURL", "");
+      configWrite.save();
+      connected = false;
+      res.render("mongodbSetup");
       break;
     case "resetAttendance":
       mongoose.connection.collections.attendances.drop();
@@ -277,14 +319,9 @@ app.post("/upload", (req, res) => {
     dbModels.Group.insertMany(groupsToInsert, (err, docs) => {
       if (!err) {
         //Copy file to stored location
-        fs.copyFile(
+        fs.copyFileSync(
           __dirname + "/temp/" + file.name,
-          __dirname + "/public/data/current_members.csv",
-          err => {
-            if (err) {
-              throw err;
-            }
-          }
+          __dirname + "/public/data/current_members.csv"
         );
         fs.unlinkSync(__dirname + "/temp/" + file.name); //Delete file
         res.redirect("/");

@@ -3,9 +3,21 @@
 
 <body>
 
-  <h1>Error</h1>
-  <h5><%= error %></h5>
-  <p>Please press back on your browser.</p>
+  <section class="header-section">
+    <div class="container-fluid">
+      <h1 class="main-title">Error</h1>
+    </div>
+  </section>
+
+  <div class="alert alert-danger error-alert" role="alert">
+  <h4 class="alert-heading">Something Went Wrong</h4>
+  <p><%= error %></p>
+  <hr>
+  <a href="/" class="alert-link">Click here to return</a>
+</div>
+
+
+
 
   <%- include('partials/footer'); -%>
 </body>

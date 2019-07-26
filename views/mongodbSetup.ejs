@@ -1,0 +1,23 @@
+<%- include('partials/header'); -%>
+</head>
+
+<body>
+
+  <section class="header-section">
+    <div class="container-fluid">
+      <h1 class="main-title">MongoDB Setup</h1>
+      <h5 class="smaller-title">Please paste the NodeJS application connection link to your mongodb database.</h5>
+    </div>
+  </section>
+
+  <form action="/mongosetup" method="post" class="setup-form">
+    <div class="form-group">
+      <input class="form-control form-control-lg" type="text" name="url" autocomplete="off">
+    </div>
+    <button type="submit" class="btn btn-primary">Upload Organization Members</button>
+  </form>
+
+  <%- include('partials/footer'); -%>
+</body>
+
+</html>

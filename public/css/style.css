@@ -1,6 +1,6 @@
 body {
   background-color: #f5f6fa;
-  /* A fancy white */
+  font: caption;
 }
 
 /* Header */
@@ -18,10 +18,36 @@ body {
   padding-top: 10px;
 }
 
-@media(max-width: 768px) {
-  .header-section {
-    text-align: center;
-  }
+.settings-btn-container {
+  text-align: right;
+  padding-top: 1%;
+  padding-right: 2%;
+}
+
+.settings-btn {
+  font-size: 2.5rem;
+  padding: 0;
+  color: white;
+  background-color: Transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.settings-btn:hover {
+  color: #636e72;
+}
+
+.settings-btn:focus {
+  outline: none;
+}
+
+.setup-form {
+  padding: 10%;
+  text-align: center;
+}
+
+.error-alert {
+  padding: 6%;
 }
 
 /* Home Page */

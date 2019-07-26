@@ -5,8 +5,15 @@
 
   <section class="header-section">
     <div class="container-fluid">
-      <h1 class="main-title"><%= orgName %></h1>
-      <h5 class="smaller-title"><%= date %></h5>
+      <div class="row">
+        <div class="col-10">
+          <h1 class="main-title"><%= orgName %></h1>
+          <h5 class="smaller-title"><%= date %></h5>
+        </div>
+        <div class="col-2 settings-btn-container">
+          <button type="button" class="settings-btn" onclick="location.href='/settings';"><i class="fa fa-cog"></i></button>
+        </div>
+      </div>
     </div>
   </section>
 
