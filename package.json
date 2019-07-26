@@ -2,10 +2,9 @@
   "name": "sign-in-db",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
@@ -23,8 +22,5 @@
     "formidable": "^1.2.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.6.6"
-  },
-  "devDependencies": {
-    "electron": "^5.0.8"
   }
 }
