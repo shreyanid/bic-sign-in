@@ -113,3 +113,14 @@ body {
 .preferences-form {
   margin: 0 10% 3%;
 }
+
+.search:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.search {
+  margin-bottom: 3.5%;
+  padding: 3% 2%;
+  font-size: 1.5rem;
+}

@@ -26,6 +26,7 @@
     <div class="container-fluid">
       <ul class="nav nav-pills nav-fill" role="tablist" id="tab-header">
         <!-- Start Tab Titles -->
+        <% if (groups.length > 1) { %>
         <% groups.forEach(function(group) { %>
         <% if (group.main) { %>
         <li class="nav-item tab-title">
@@ -37,6 +38,7 @@
         </li>
         <% } %>
         <% }); %>
+        <% } %>
         <!-- End Tab Titles -->
       </ul>
       <div class="tab-content" id="tab-content">
@@ -51,6 +53,7 @@
             <!-- Start Search bar-->
             <input class="search form-control form-control-lg" placeholder="Search ..." />
             <!-- End Search bar-->
+
 
             <ul class="list-group list-group-flush list">
 

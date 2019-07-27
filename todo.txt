@@ -1,8 +1,3 @@
-- Make changes to distribute app
-  - Icon, windows download file, etc.
 - Sign in w/ Google for settings page
-- if there's only one group then get rid of the header pill
-
-
 
 mongodb://localhost:27017/myapp

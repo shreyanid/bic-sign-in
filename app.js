@@ -1,6 +1,7 @@
 // NPM Modules
 const express = require("express");
 const bodyParser = require("body-parser");
+const http = require("http");
 const mongoose = require("mongoose");
 const loader = require("csv-load-sync");
 const _ = require("lodash");
@@ -9,6 +10,7 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 const colors = require("colors");
 const editJsonFile = require("edit-json-file");
+const puppeteer = require("puppeteer");
 
 // Local Modules
 const support = require(__dirname + "/app_functions.js");
@@ -17,6 +19,7 @@ const db = require(__dirname + "/database/dbInterface.js");
 
 // Express App Settings
 const app = express();
+
 app.set("view engine", "ejs");
 app.use(
   bodyParser.urlencoded({
@@ -410,7 +413,7 @@ if (port == null || port == "") {
 //Regular locahost
 // let port = 3000
 
-app.listen(port, _ => {
+var server = app.listen(port, _ => {
   if (use_heroku) {
     console.log("Server has started Successfully");
   } else {
@@ -418,5 +421,21 @@ app.listen(port, _ => {
       "Local server has started successfully on port " +
         colors.white.underline(port)
     );
+    (async () => {
+      const browser = await puppeteer.launch({
+        headless: false,
+        executablePath:
+          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        defaultViewport: null,
+        args: ["--disable-infobars", "--kiosk"]
+        //, "--start-fullscreen",
+      });
+      const page = (await browser.pages())[0];
+      await page.goto("http://localhost:" + port);
+      browser.on("disconnected", async _ => {
+        server.close();
+        process.exit();
+      });
+    })();
   }
 });
