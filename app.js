@@ -422,14 +422,19 @@ var server = app.listen(port, _ => {
         colors.white.underline(port)
     );
     (async () => {
-      const browser = await puppeteer.launch({
+      let options = {
         headless: false,
-        executablePath:
-          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
         defaultViewport: null,
         args: ["--disable-infobars", "--kiosk"]
-        //, "--start-fullscreen",
-      });
+      };
+      if (process.platform == "darwin") {
+        options.executablePath =
+          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+      } else if (process.platform == "win32") {
+        options.executablePath =
+          "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+      }
+      const browser = await puppeteer.launch(options);
       const page = (await browser.pages())[0];
       await page.goto("http://localhost:" + port);
       browser.on("disconnected", async _ => {
