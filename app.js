@@ -425,7 +425,8 @@ var server = app.listen(port, _ => {
       let options = {
         headless: false,
         defaultViewport: null,
-        args: ["--disable-infobars", "--kiosk"]
+        args: ["--disable-infobars", "--kiosk"],
+        ignoreHTTPSErrors: true
       };
       if (process.platform == "darwin") {
         options.executablePath =
