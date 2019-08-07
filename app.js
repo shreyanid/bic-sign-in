@@ -28,6 +28,10 @@ app.use(
 );
 app.use(express.static("public"));
 
+var pwdRead = JSON.parse(
+  fs.readFileSync("./password.json", "utf-8")
+);
+
 //Load config.json file
 var configRead = JSON.parse(
   fs.readFileSync(__dirname + "/config.json", "utf-8")
@@ -86,7 +90,8 @@ app.get("/", (req, res) => {
                   signInText: prefs.signInText,
                   signOutText: prefs.signOutText,
                   signInIcon: prefs.signInIcon,
-                  signOutIcon: prefs.signOutIcon
+                  signOutIcon: prefs.signOutIcon,
+                  password: pwdRead.pwd
                 });
               } else {
                 // In case settings is empty for some reason
@@ -406,7 +411,10 @@ app.post("/", (req, res) => {
 var use_heroku = true;
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 3005;
+  var portRead = JSON.parse(
+    fs.readFileSync("./port.json", "utf-8")
+  );
+  port = portRead.port;
   use_heroku = false;
 }
 

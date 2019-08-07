@@ -11,11 +11,25 @@
           <h5 class="smaller-title"><%= date %></h5>
         </div>
         <div class="col-2 settings-btn-container">
-          <button type="button" class="settings-btn" onclick="location.href='/settings';"><i class="fa fa-cog"></i></button>
+          <button type="button" class="settings-btn" onclick="clickedSettings()"><i class="fa fa-cog"></i></button>
         </div>
       </div>
     </div>
   </section>
+
+  <div id="password" style="display: none;"><%= password %></div>
+
+  <script>
+    let clickedSettings = _ => {
+      let realPwd = $("#password").text();
+      let pwd = prompt("Please enter the password.");
+      if (pwd.toLowerCase() == realPwd) {
+        location.href='/settings';
+      } else {
+        alert("Wrong password.");
+      }
+    };
+  </script>
 
 
 
