@@ -26,4 +26,6 @@ npm install
 ## Run App:
 ```javascript
 node app.js
+// OR
+./start.sh
 ```
