@@ -433,7 +433,7 @@ var server = app.listen(port, _ => {
       let options = {
         headless: false,
         defaultViewport: null,
-        args: ["--disable-infobars", "--kiosk"],
+        args: ["--disable-infobars", "--start-fullscreen"],
         ignoreHTTPSErrors: true
       };
       if (process.platform == "darwin") {
