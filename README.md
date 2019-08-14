@@ -29,3 +29,10 @@ node app.js
 // OR
 ./start.sh
 ```
+## Change Admin Password to view settings page:
+Edit password.json
+```javascript
+{
+  "pwd": "test"
+}
+```
