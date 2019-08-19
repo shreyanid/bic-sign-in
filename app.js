@@ -54,7 +54,10 @@ let tryConnect = async url => {
   }
 };
 
-tryConnect(configRead.mongodbURL);
+(async _ => {
+  await tryConnect(configRead.mongodbURL);
+})()
+
 
 app.post("/mongosetup", async (req, res) => {
   await tryConnect(req.body.url);
