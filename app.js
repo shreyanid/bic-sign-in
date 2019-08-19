@@ -448,6 +448,9 @@ var server = app.listen(port, _ => {
         } else if (process.arch == "x32") {
           options.executablePath =
             "C:/Program Files/Google/Chrome/Application/chrome.exe";
+        } else {
+          options.executablePath =
+            "C:/Program Files/Google/Chrome/Application/chrome.exe";
         }
       }
       await tryConnect(configRead.mongodbURL);
