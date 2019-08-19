@@ -435,7 +435,7 @@ var server = app.listen(port, _ => {
       let options = {
         headless: false,
         defaultViewport: null,
-        //args: ["--disable-infobars", "--start-fullscreen"],
+        args: ["--disable-infobars", "--start-fullscreen"],
         ignoreHTTPSErrors: true
       };
       if (process.platform == "darwin") {
@@ -454,7 +454,6 @@ var server = app.listen(port, _ => {
       const browser = await puppeteer.launch(options);
       const page = (await browser.pages())[0];
       await page.goto("http://localhost:" + port);
-      //await page.reload();
       browser.on("disconnected", async _ => {
         server.close();
         process.exit();
