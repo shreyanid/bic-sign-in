@@ -47,6 +47,11 @@ let tryConnect = async url => {
       useNewUrlParser: true,
       useFindAndModify: false
     });
+  } catch (error) {
+    console.log("Couldn't connect to DB");
+    connected = false;
+  }
+  finally {
     while (mongoose.connection.readyState === 2) {
       if (mongoose.connection.readyState === 1) {
         console.log("Could connect to DB");
@@ -57,9 +62,6 @@ let tryConnect = async url => {
       console.log("Could connect to DB");
       connected = true;
     }
-  } catch (error) {
-    console.log("Couldn't connect to DB");
-    connected = false;
   }
 };
 
