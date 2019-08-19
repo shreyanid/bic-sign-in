@@ -56,11 +56,15 @@ let tryConnect = async url => {
       if (mongoose.connection.readyState === 1) {
         console.log("Could connect to DB");
         connected = true;
+      } else {
+        connected = false;
       }
     }
     if (mongoose.connection.readyState === 1) {
       console.log("Could connect to DB");
       connected = true;
+    } else {
+      connected = false;
     }
   }
 };
@@ -449,6 +453,7 @@ var server = app.listen(port, _ => {
       const browser = await puppeteer.launch(options);
       const page = (await browser.pages())[0];
       await page.goto("http://localhost:" + port);
+      await page.reload();
       browser.on("disconnected", async _ => {
         server.close();
         process.exit();
