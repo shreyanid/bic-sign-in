@@ -40,7 +40,7 @@ var configRead = JSON.parse(
 let configWrite = editJsonFile(__dirname + "/config.json");
 
 //Make local or atlas mongoDB connections
-var connected;
+var connected = false;
 let tryConnect = async url => {
   try {
     await mongoose.connect(url, {
@@ -48,20 +48,19 @@ let tryConnect = async url => {
       useFindAndModify: false
     });
   } catch (error) {
-    console.log("Couldn't connect to DB");
+    console.log("ERROR: Could not connect to DB");
     connected = false;
-  }
-  finally {
+  } finally {
     while (mongoose.connection.readyState === 2) {
       if (mongoose.connection.readyState === 1) {
-        console.log("Could connect to DB");
+        console.log("SUCCESS: Connected to DB");
         connected = true;
       } else {
         connected = false;
       }
     }
     if (mongoose.connection.readyState === 1) {
-      console.log("Could connect to DB");
+      console.log("SUCCESS: Connected to DB");
       connected = true;
     } else {
       connected = false;
@@ -81,10 +80,6 @@ app.post("/mongosetup", async (req, res) => {
     res.render("mongodbsetup");
   }
 });
-
-(async _ => {
-  await tryConnect(configRead.mongodbURL);
-})();
 
 // Main page get route
 app.get("/", (req, res) => {
@@ -440,20 +435,26 @@ var server = app.listen(port, _ => {
       let options = {
         headless: false,
         defaultViewport: null,
-        args: ["--disable-infobars", "--start-fullscreen"],
+        //args: ["--disable-infobars", "--start-fullscreen"],
         ignoreHTTPSErrors: true
       };
       if (process.platform == "darwin") {
         options.executablePath =
           "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
       } else if (process.platform == "win32") {
-        options.executablePath =
-          "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+        if (process.arch == "x64") {
+          options.executablePath =
+            "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+        } else if (process.arch == "x32") {
+          options.executablePath =
+            "C:/Program Files/Google/Chrome/Application/chrome.exe";
+        }
       }
+      await tryConnect(configRead.mongodbURL);
       const browser = await puppeteer.launch(options);
       const page = (await browser.pages())[0];
       await page.goto("http://localhost:" + port);
-      await page.reload();
+      //await page.reload();
       browser.on("disconnected", async _ => {
         server.close();
         process.exit();

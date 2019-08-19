@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": ""
   },
   "author": "",
   "license": "ISC",
@@ -23,7 +23,6 @@
     "http": "0.0.0",
     "lodash": "^4.17.15",
     "mongoose": "^5.6.6",
-    "puppeteer": "^1.19.0",
-    "socket.io": "^2.2.0"
+    "puppeteer": "^1.19.0"
   }
 }

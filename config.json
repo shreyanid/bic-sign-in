@@ -1,3 +1,3 @@
 {
-  "mongodbURL": "mongodb+srv://admin-aashish:test123@cluster0-zi138.mongodb.net/someTest"
+  "mongodbURL": "mongodb+srv://admin-aashish:test123@cluster0-zi138.mongodb.net/blah"
 }
