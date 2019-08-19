@@ -12,6 +12,7 @@ const colors = require("colors");
 const editJsonFile = require("edit-json-file");
 const puppeteer = require("puppeteer");
 
+
 // Local Modules
 const support = require(__dirname + "/app_functions.js");
 const dbModels = require(__dirname + "/database/models.js");
@@ -46,7 +47,14 @@ let tryConnect = async url => {
       useNewUrlParser: true,
       useFindAndModify: false
     });
+    while (mongoose.connection.readyState === 2) {
+      if (mongoose.connection.readyState === 1) {
+        console.log("Could connect to DB");
+        connected = true;
+      }
+    }
     if (mongoose.connection.readyState === 1) {
+      console.log("Could connect to DB");
       connected = true;
     }
   } catch (error) {
@@ -196,8 +204,7 @@ app.post("/settings", (req, res) => {
         //Export the records list to CSV
         const csvWriter = createCsvWriter({
           path: __dirname + "/temp/exported_data.csv",
-          header: [
-            {
+          header: [{
               id: "date",
               title: "Date"
             },
@@ -222,8 +229,7 @@ app.post("/settings", (req, res) => {
           });
       }
       if (exportOptions.name !== "All Members") {
-        dbModels.Attendance.find(
-          {
+        dbModels.Attendance.find({
             name: exportOptions.name
           },
           (err, attendances) => {
@@ -231,8 +237,7 @@ app.post("/settings", (req, res) => {
               exportToFile(attendances, exportOptions);
             } else {
               res.render("error", {
-                error:
-                  "Could not get attendances from database. Please check your internet connection."
+                error: "Could not get attendances from database. Please check your internet connection."
               });
             }
           }
@@ -243,8 +248,7 @@ app.post("/settings", (req, res) => {
             exportToFile(attendances, exportOptions);
           } else {
             res.render("error", {
-              error:
-                "Could not get attendances from database. Please check your internet connection."
+              error: "Could not get attendances from database. Please check your internet connection."
             });
           }
         });
@@ -278,8 +282,7 @@ app.get("/preferences", (req, res) => {
       }
     } else {
       res.render("error", {
-        error:
-          "Could not get data from database. Please check your internet connection."
+        error: "Could not get data from database. Please check your internet connection."
       });
     }
   });
@@ -307,8 +310,7 @@ app.post("/preferences", (req, res) => {
         res.redirect("/settings");
       } else {
         res.render("error", {
-          error:
-            "Could not save new preferences. Please check your internet connection."
+          error: "Could not save new preferences. Please check your internet connection."
         });
       }
     });
@@ -350,8 +352,7 @@ app.post("/", (req, res) => {
 
   //Update currentlyHere status of member of group
   dbModels.Group.findById(
-    groupID,
-    {
+    groupID, {
       _id: 0,
       members: 1
     },
@@ -382,11 +383,9 @@ app.post("/", (req, res) => {
             });
             roll.save();
           }
-          dbModels.Group.findOneAndUpdate(
-            {
+          dbModels.Group.findOneAndUpdate({
               _id: groupID
-            },
-            {
+            }, {
               $set: $set
             },
             (err, foundList) => {
@@ -396,8 +395,7 @@ app.post("/", (req, res) => {
                 }, 850);
               } else {
                 res.render("error", {
-                  error:
-                    "Could not connect to database, please check your internet connection."
+                  error: "Could not connect to database, please check your internet connection."
                 });
               }
             }
@@ -430,7 +428,7 @@ var server = app.listen(port, _ => {
   } else {
     console.log(
       "Local server has started successfully on port " +
-        colors.white.underline(port)
+      colors.white.underline(port)
     );
     (async () => {
       let options = {
