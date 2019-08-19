@@ -39,7 +39,7 @@ var configRead = JSON.parse(
 let configWrite = editJsonFile(__dirname + "/config.json");
 
 //Make local or atlas mongoDB connections
-var connected = false;
+var connected;
 let tryConnect = async url => {
   try {
     await mongoose.connect(url, {
@@ -51,13 +51,9 @@ let tryConnect = async url => {
     }
   } catch (error) {
     console.log("Couldn't connect to DB");
+    connected = false;
   }
 };
-
-(async _ => {
-  await tryConnect(configRead.mongodbURL);
-})()
-
 
 app.post("/mongosetup", async (req, res) => {
   await tryConnect(req.body.url);
@@ -71,6 +67,10 @@ app.post("/mongosetup", async (req, res) => {
     res.render("mongodbsetup");
   }
 });
+
+(async _ => {
+  await tryConnect(configRead.mongodbURL);
+})();
 
 // Main page get route
 app.get("/", (req, res) => {
