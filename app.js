@@ -75,7 +75,7 @@ app.post("/mongosetup", async (req, res) => {
     // Set reset all button to also reset the config.json file ORRR maybe not
     configWrite.set("mongodbURL", req.body.url);
     configWrite.save();
-    res.render("setup");
+    res.redirect("/");
   } else {
     res.render("mongodbsetup");
   }
