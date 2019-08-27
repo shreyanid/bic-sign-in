@@ -130,10 +130,7 @@ app.post("/settings", (req, res) => {
       break;
     case "resetAll":
       mongoose.connection.db.dropDatabase();
-      configWrite.set("mongodbURL", "");
-      configWrite.save();
-      connected = false;
-      res.render("mongodbSetup");
+      res.redirect("/");
       break;
     case "resetAttendance":
       mongoose.connection.collections.attendances.drop();
@@ -303,12 +300,6 @@ app.post("/upload", (req, res) => {
     let groupsToInsert = db.processUploadedCSV(data);
     dbModels.Group.insertMany(groupsToInsert, (err, docs) => {
       if (!err) {
-        //Copy file to stored location
-        fs.copyFileSync(
-          __dirname + "/temp/" + file.name,
-          __dirname + "/public/data/current_members.csv"
-        );
-        fs.unlinkSync(__dirname + "/temp/" + file.name); //Delete file
         res.redirect("/");
       } else {
         console.log("There was an error saving groups from the CSV");

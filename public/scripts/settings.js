@@ -43,7 +43,6 @@ function makeUpdateButton() {
 }
 
 function clickedUpdate() {
-  window.location = 'data/current_members.csv';
   $(".update-button-container").empty();
   $(".update-button-container").append(makeUpdateButton());
 }
