@@ -10,7 +10,7 @@ const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
 
 let mongoURL = "mongodb+srv://admin-shreya:shreya@shreya-tmdl3.mongodb.net/BIC-Sign-In";
-let password = "test"
+let password = "admin"
 
 // Local Modules
 const support = require(__dirname + "/app_functions.js");
