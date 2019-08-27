@@ -1,5 +1,0 @@
-- Sign in w/ Google for settings page
-
-mongodb://localhost:27017/myapp
-
-- Occasionally some errors and the kill command isn't executed

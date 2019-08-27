@@ -3,3 +3,4 @@ node_modules/
 temp/exported_data.csv
 public/data/current_members.csv
 Procfile
+.jshintrc

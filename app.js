@@ -8,10 +8,9 @@ const _ = require("lodash");
 const formidable = require("formidable");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
 const fs = require("fs");
-const colors = require("colors");
-const editJsonFile = require("edit-json-file");
-const puppeteer = require("puppeteer");
 
+let mongoURL = "mongodb+srv://admin-shreya:shreya@shreya-tmdl3.mongodb.net/BIC-Sign-In";
+let password = "test"
 
 // Local Modules
 const support = require(__dirname + "/app_functions.js");
@@ -29,18 +28,7 @@ app.use(
 );
 app.use(express.static("public"));
 
-var pwdRead = JSON.parse(
-  fs.readFileSync("./password.json", "utf-8")
-);
-
-//Load config.json file
-var configRead = JSON.parse(
-  fs.readFileSync(__dirname + "/config.json", "utf-8")
-);
-let configWrite = editJsonFile(__dirname + "/config.json");
-
 //Make local or atlas mongoDB connections
-var connected = false;
 let tryConnect = async url => {
   try {
     await mongoose.connect(url, {
@@ -49,75 +37,51 @@ let tryConnect = async url => {
     });
   } catch (error) {
     console.log("ERROR: Could not connect to DB");
-    connected = false;
   } finally {
     while (mongoose.connection.readyState === 2) {
       if (mongoose.connection.readyState === 1) {
         console.log("SUCCESS: Connected to DB");
-        connected = true;
-      } else {
-        connected = false;
       }
-    }
-    if (mongoose.connection.readyState === 1) {
-      console.log("SUCCESS: Connected to DB");
-      connected = true;
-    } else {
-      connected = false;
+      if (mongoose.connection.readyState === 1) {
+        console.log("SUCCESS: Connected to DB");
+      }
     }
   }
 };
 
-app.post("/mongosetup", async (req, res) => {
-  await tryConnect(req.body.url);
-  if (connected) {
-    // The connection is good so save URL to file
-    // Set reset all button to also reset the config.json file ORRR maybe not
-    configWrite.set("mongodbURL", req.body.url);
-    configWrite.save();
-    res.redirect("/");
-  } else {
-    res.render("mongodbsetup");
-  }
-});
-
 // Main page get route
 app.get("/", (req, res) => {
-  if (!connected) {
-    res.render("mongodbSetup");
-  } else {
-    db.getGroups((groups, groupsIsEmpty) => {
-      //Check if there is data in the db
-      if (groups && !groupsIsEmpty) {
-        //Populate settings db with some default prefs
-        new dbModels.Setting().save(err => {
-          if (!err) {
-            db.getSettings(settings => {
-              if (settings) {
-                let prefs = settings[0];
-                res.render("index", {
-                  date: support.getDate(),
-                  groups: groups,
-                  orgName: prefs.orgName,
-                  signInText: prefs.signInText,
-                  signOutText: prefs.signOutText,
-                  signInIcon: prefs.signInIcon,
-                  signOutIcon: prefs.signOutIcon,
-                  password: pwdRead.pwd
-                });
-              } else {
-                // In case settings is empty for some reason
-                res.redirect("/");
-              }
-            });
-          }
-        });
-      } else {
-        // If there is no data in the db, let the user upload a file
-        res.render("setup");
-      }
-    });
-  }
+  db.getGroups((groups, groupsIsEmpty) => {
+    //Check if there is data in the db
+    if (groups && !groupsIsEmpty) {
+      //Populate settings db with some default prefs
+      new dbModels.Setting().save(err => {
+        if (!err) {
+          db.getSettings(settings => {
+            if (settings) {
+              let prefs = settings[0];
+              res.render("index", {
+                date: support.getDate(),
+                groups: groups,
+                orgName: prefs.orgName,
+                signInText: prefs.signInText,
+                signOutText: prefs.signOutText,
+                signInIcon: prefs.signInIcon,
+                signOutIcon: prefs.signOutIcon,
+                password: password
+              });
+            } else {
+              // In case settings is empty for some reason
+              res.redirect("/");
+            }
+          });
+        }
+      });
+    } else {
+      // If there is no data in the db, let the user upload a file
+      res.render("setup");
+    }
+  });
 });
 
 // Settings page get route
@@ -410,57 +374,15 @@ app.post("/", (req, res) => {
 });
 
 //For Heroku
-var use_heroku = true;
 let port = process.env.PORT;
 if (port == null || port == "") {
-  var portRead = JSON.parse(
-    fs.readFileSync("./port.json", "utf-8")
-  );
-  port = portRead.port;
-  use_heroku = false;
+  port = 3000;
+  console.log("Server has started Successfully locally on port " + port);
+} else {
+  console.log("Server has started on heroku");
 }
-
-//Regular locahost
-// let port = 3000
-
-var server = app.listen(port, _ => {
-  if (use_heroku) {
-    console.log("Server has started Successfully");
-  } else {
-    console.log(
-      "Local server has started successfully on port " +
-      colors.white.underline(port)
-    );
-    (async () => {
-      let options = {
-        headless: false,
-        defaultViewport: null,
-        args: ["--disable-infobars", "--start-fullscreen"],
-        ignoreHTTPSErrors: true
-      };
-      if (process.platform == "darwin") {
-        options.executablePath =
-          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-      } else if (process.platform == "win32") {
-        if (process.arch == "x64") {
-          options.executablePath =
-            "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
-        } else if (process.arch == "x32") {
-          options.executablePath =
-            "C:/Program Files/Google/Chrome/Application/chrome.exe";
-        } else {
-          options.executablePath =
-            "C:/Program Files/Google/Chrome/Application/chrome.exe";
-        }
-      }
-      await tryConnect(configRead.mongodbURL);
-      const browser = await puppeteer.launch(options);
-      const page = (await browser.pages())[0];
-      await page.goto("http://localhost:" + port);
-      browser.on("disconnected", async _ => {
-        server.close();
-        process.exit();
-      });
-    })();
-  }
+app.listen(port, _ => {
+  (async _ => {
+    await tryConnect(mongoURL);
+  })();
 });
