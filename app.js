@@ -29,9 +29,7 @@ app.use(
 app.use(express.static("public"));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
-(async _ => {
-  await tryConnect(mongoURL);
-})();
+
 
 //Make local or atlas mongoDB connections
 let tryConnect = async url => {
@@ -53,6 +51,10 @@ let tryConnect = async url => {
     }
   }
 };
+
+(async _ => {
+  await tryConnect(mongoURL);
+})();
 
 // Main page get route
 app.get("/", (req, res) => {
