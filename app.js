@@ -29,6 +29,9 @@ app.use(
 app.use(express.static("public"));
 
 app.get('/favicon.ico', (req, res) => res.status(204));
+(async _ => {
+  await tryConnect(mongoURL);
+})();
 
 //Make local or atlas mongoDB connections
 let tryConnect = async url => {
@@ -383,8 +386,4 @@ if (port == null || port == "") {
 } else {
   console.log("Server has started on heroku");
 }
-app.listen(port, _ => {
-  (async _ => {
-    await tryConnect(mongoURL);
-  })();
-});
+app.listen(port);
